@@ -1,0 +1,31 @@
+name: BlockUndo
+main: com.accmss.blockundo.BlockUndo
+version: 1.5.5
+description: BlockUndo permissions.
+
+commands:
+   undo:
+      description: Undo player's blocks
+      usage: /undo <player>
+      permission: blockundo.admin
+      permisison-message: You don't have permissions
+   redo:
+      description: Redo player's blocks.
+      usage: /redo <player>
+      permission: blockundo.admin
+      permisison-message: You don't have permissions
+   purge:
+      description: Purges old blocks from database.
+      usage: /purge
+      permission: blockundo.admin
+      permisison-message: You don't have permissions
+   query:
+      description: Gives the query tools.
+      usage: /query <player>
+      permission: blockundo.player
+      permisison-message: You don't have permissions
+   vaporize:
+      description: Vaporizes water/lava towers.
+      usage: /vapor
+      permission: blockundo.admin
+      permisison-message: You don't have permissions

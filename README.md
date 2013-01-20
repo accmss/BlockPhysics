@@ -1,4 +1,0 @@
-BlockPhysics
-============
-
-Bukkit plugin
