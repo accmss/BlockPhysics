@@ -1,4 +1,4 @@
-package com.accmss.blockundo;
+package com.accmss.blockphysics;
 
 
 //IMPORT - JAVA
@@ -9,30 +9,41 @@ import java.io.OutputStream;
 import java.util.List;
 
 /*
-# BlockUndo
+# BlockPhysics
 
-Database:
-  MySQLMachine: 127.0.0.1
-  MySQLTCPPort: 3306
-  MySQLDatabse: blockundo
-  MySQLUserAcc: root
-  MySQLPasswrd:''
-Worlds:
-  - world
-  - world_nether
-  - world_the_end
-Regeneration:
-  InfiniteOres: 14,15,16,56,73,82,74,129,153
-  RegenOreDays: 1
-Version:
-  ConfigYMLVer: 1
+Fire:
+  NoFireSpread: ON
+  LogToConsole: ON
+  ShowWarnings: ON
+
+Explosions:
+  CancelAllTNT: ON
+  CancelCreepa: ON
+  CancelWither: ON
+  CancelGhasts: ON
+
+Lava:
+  NoGlobalFlow: ON
+  NoBucketFlow: ON
+  InfinitePool: ON
+  ObsidianFlow: ON
+	
+Water:
+  NoGlobalFlow: ON
+  NoBucketFlow: ON
+  InfinitePool: ON
+  ObsidianFlow: ON
+
+Vines:
+  NoVinesInAir: ON
+  SheersAssist: ON
  */
 
 
 //SYNC TO VERSION: 1
 
 
-public class BlockUndoConfig {
+public class BlockPhysicsConfig {
 
 	//VARS - SETTINGS
 public static String MySQLMachine = null;
@@ -63,18 +74,18 @@ public static void LoadSettings(String file)
 	EnsureConfig();
 
 	//1 MySQL
-	MySQLMachine = BlockUndo.zConfig.getString("Database.MySQLMachine", MySQLMachine);
-	MySQLTCPPort = BlockUndo.zConfig.getString("Database.MySQLTCPPort", MySQLTCPPort);
-	MySQLDatabse = BlockUndo.zConfig.getString("Database.MySQLDatabse", MySQLDatabse);
-	MySQLUserAcc = BlockUndo.zConfig.getString("Database.MySQLUserAcc", MySQLUserAcc);
-	MySQLPasswrd = BlockUndo.zConfig.getString("Database.MySQLPasswrd", MySQLPasswrd);
+	MySQLMachine = BlockPhysics.zConfig.getString("Database.MySQLMachine", MySQLMachine);
+	MySQLTCPPort = BlockPhysics.zConfig.getString("Database.MySQLTCPPort", MySQLTCPPort);
+	MySQLDatabse = BlockPhysics.zConfig.getString("Database.MySQLDatabse", MySQLDatabse);
+	MySQLUserAcc = BlockPhysics.zConfig.getString("Database.MySQLUserAcc", MySQLUserAcc);
+	MySQLPasswrd = BlockPhysics.zConfig.getString("Database.MySQLPasswrd", MySQLPasswrd);
 
 	//2 World
-	Worlds = BlockUndo.zConfig.getStringList("Worlds");
+	Worlds = BlockPhysics.zConfig.getStringList("Worlds");
 
 	//3 Regeneration
-	InfiniteOres = BlockUndo.zConfig.getString("Regeneration.InfiniteOres", InfiniteOres);
-	RegenOreDays = BlockUndo.zConfig.getInt("Regeneration.RegenOreDays", RegenOreDays);
+	InfiniteOres = BlockPhysics.zConfig.getString("Regeneration.InfiniteOres", InfiniteOres);
+	RegenOreDays = BlockPhysics.zConfig.getInt("Regeneration.RegenOreDays", RegenOreDays);
 
 }
 
@@ -95,28 +106,28 @@ public static void SetSlash(String file)
 private static void EnsureConfig()
 {
 
-	String zFile = "plugins" + SlashChar + "BlockUndo" + SlashChar + "config.yml";
+	String zFile = "plugins" + SlashChar + "BlockPhysics" + SlashChar + "config.yml";
 	File f = new File(zFile);
 
 		if(!f.isFile())
 		{ 
-		BlockUndoLib.Chat(BlockUndo.zPlugin.getServer().getConsoleSender(), "BlockUndo", "§fWriting new configuration.yml.");
+		BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(), "BlockPhysics", "§fWriting new configuration.yml.");
 		CreateConfig(zFile);
 		}
 		else
 		{
-		BlockUndo.zConfig = BlockUndo.zPlugin.getConfig();
+		BlockPhysics.zConfig = BlockPhysics.zPlugin.getConfig();
 		}
 
 		//Update config
 	    try
-	    {ConfigYMLVer = BlockUndo.zConfig.getInt("Version.ConfigYMLVer", ConfigYMLVer);}
+	    {ConfigYMLVer = BlockPhysics.zConfig.getInt("Version.ConfigYMLVer", ConfigYMLVer);}
 		catch (Exception e)
 		{ConfigYMLVer = 0;}
 	    
 		if(ConfigYMLVer != SyncVers)
 		{
-		BlockUndoLib.Chat(BlockUndo.zPlugin.getServer().getConsoleSender(), "BlockUndo", "§fUpdating new configuration.yml...");
+		BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(), "BlockPhysics", "§fUpdating new configuration.yml...");
 		CreateConfig(zFile);
 		}
 
@@ -126,7 +137,7 @@ private static void CreateConfig(String file)
 
 	try
 	{
-	InputStream is = BlockUndo.zPlugin.getClass().getResourceAsStream("/config.yml");
+	InputStream is = BlockPhysics.zPlugin.getClass().getResourceAsStream("/config.yml");
 	OutputStream os = new FileOutputStream(file);  
 	byte[] buffer = new byte[4096];  
 	int bytesRead;  
@@ -136,10 +147,10 @@ private static void CreateConfig(String file)
 		}  
 	is.close();  
 	os.close(); 
-	BlockUndo.zConfig = BlockUndo.zPlugin.getConfig();
+	BlockPhysics.zConfig = BlockPhysics.zPlugin.getConfig();
 	} catch (Exception e) {
-	BlockUndoLib.Chat(BlockUndo.zPlugin.getServer().getConsoleSender(), "BlockUndo", "§fWriting new configuration.yml failed!");
-	BlockUndoLib.Chat(BlockUndo.zPlugin.getServer().getConsoleSender(), "BlockUndo", "§4" + e.getCause() + ": " +  e.getMessage());
+	BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(), "BlockPhysics", "§fWriting new configuration.yml failed!");
+	BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(), "BlockPhysics", "§4" + e.getCause() + ": " +  e.getMessage());
 	}
 	
 

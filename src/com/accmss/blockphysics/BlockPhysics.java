@@ -1,4 +1,4 @@
-package com.accmss.blockundo;
+package com.accmss.blockphysics;
 
 
 //IMPORTS - JAVA
@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 
 
 //IMPORTS - BUKKIT
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -22,10 +21,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 
 
-public class BlockUndo extends JavaPlugin  {
+public class BlockPhysics extends JavaPlugin  {
 
 	
-public static BlockUndo zPlugin;
+public static BlockPhysics zPlugin;
 protected static FileConfiguration zConfig;
 public static Logger zLogger = Logger.getLogger("Minecraft");
 
@@ -67,75 +66,44 @@ public void onEnable() {
 	zPlugin = this;
 
 	//Settings
-	BlockUndoConfig.LoadSettings(zPlugin.getFile().getAbsolutePath());
+	BlockPhysicsConfig.LoadSettings(zPlugin.getFile().getAbsolutePath());
 	
-	//MySQL
-	BlockUndoMySQL.Connect();
 
-	
-		if (!BlockUndoMySQL.mysql_online)
-		{
-		BlockUndoLib.Chat(BlockUndo.zPlugin.getServer().getConsoleSender(), "BlockUndo", ChatColor.GRAY + BlockUndoMySQL.mysql_version + " : " +  BlockUndoMySQL.mysql_url + ChatColor.RED + " Offline.");
-		}
-
-	WORLD = this.getServer().getWorld(this.getServer().getWorlds().get(0).getName());
-	LOCTA = WORLD.getSpawnLocation();
-	BlockUndoLib.LastLocation = LOCTA;
 
 	//Every 1 minute we divide clicks by idleM 
 	getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
 		public void run()
 		{
-		BlockUndoLib.CommitAll("1MTimer");
+
 		ticks++;
 			if (ticks > 59)
 			{
-			BlockUndoLib.RegenOres();
+
 			ticks = 0L;
 			}
 	    }
 	}, idelay + 4, repeat); //20 clicks to a second
 
-	/*
-	thread = Thread.currentThread().getId(); 
-	String threadNm = Thread.currentThread().getName(); 
-	String OSversion = System.getProperty("os.version");
-	String JAVAversion = System.getProperty("java.version");
-	int cores = Runtime.getRuntime().availableProcessors();
-	BlockUndoLib.Chat(BlockUndo.zPlugin.getServer().getConsoleSender(), "BlockUndo", "OS     : " + OSversion);
-	BlockUndoLib.Chat(BlockUndo.zPlugin.getServer().getConsoleSender(), "BlockUndo", "Java   : " + JAVAversion);
-	BlockUndoLib.Chat(BlockUndo.zPlugin.getServer().getConsoleSender(), "BlockUndo", "Cores  : " + cores);
-	BlockUndoLib.Chat(BlockUndo.zPlugin.getServer().getConsoleSender(), "BlockUndo", "Thread : " + thread + "(" + threadNm + ")");
-	*/
 
-	BlockUndoLib.Chat(BlockUndo.zPlugin.getServer().getConsoleSender(), "BlockUndo",  "   " + BlockUndoMySQL.mysql_version + " " +  BlockUndoMySQL.mysql_url + "§f Connected.");
-	BlockUndoLib.Chat(BlockUndo.zPlugin.getServer().getConsoleSender(), "BlockUndo",  BlockUndoLib.GetNumber(BlockUndoMySQL.mysql_players, ChatColor.GREEN, format_7zeros, true) + ChatColor.GRAY + " Players");
-	BlockUndoLib.Chat(BlockUndo.zPlugin.getServer().getConsoleSender(), "BlockUndo",  BlockUndoLib.GetNumber(BlockUndoMySQL.mysql_worlds.length, ChatColor.GREEN, format_7zeros, true) + ChatColor.GRAY + " Worlds");
-	BlockUndoLib.Chat(BlockUndo.zPlugin.getServer().getConsoleSender(), "BlockUndo",  BlockUndoLib.GetNumber(BlockUndoMySQL.mysql_blocks, ChatColor.GREEN, format_7zeros, true) + ChatColor.GRAY + " Blocks");
-	BlockUndoLib.Purge(getServer().getConsoleSender());
 	
 		//Metrics
 		try
 		{
-		BlockUndoMetricsLite metrics = new BlockUndoMetricsLite(this);
+		BlockPhysicsMetricsLite metrics = new BlockPhysicsMetricsLite(this);
 		metrics.start();
 		} catch (IOException e) {
-		BlockUndoLib.Chat(BlockUndo.zPlugin.getServer().getConsoleSender(), "[MetricsLite]", e.getCause() + " : " + e.getMessage());
+		BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(), "[MetricsLite]", e.getCause() + " : " + e.getMessage());
 		}
 
 	//Listners
-	getServer().getPluginManager().registerEvents(new BlockUndoPlayer(this), this);
-	getServer().getPluginManager().registerEvents(new BlockUndoBlocks(this), this);
+	getServer().getPluginManager().registerEvents(new BlockPhysicsPlayer(this), this);
+	getServer().getPluginManager().registerEvents(new BlockPhysicsBlocks(this), this);
 		
 }
 @Override
 public void onDisable() 
 {
 
-	BlockUndoLib.Chat(BlockUndo.zPlugin.getServer().getConsoleSender(), "BlockUndo",  ChatColor.WHITE + "MySQL offline.");
-	BlockUndoLib.CommitAll("onDisable");
-	BlockUndoMySQL.Disconnenct();
-	
 }
 
 
@@ -152,29 +120,21 @@ int icase = 0;
 		if(sender instanceof Player)
 		{
 		PLAYA = (Player)sender;
-		//BlockUndoLib.LogCommand(PLAYA.getName(), cmd.toString());
+		//BlockPhysicsLib.LogCommand(PLAYA.getName(), cmd.toString());
 		}
 		else
 		{
-		//BlockUndoLib.LogCommand(sender.getName(), cmd.toString());
+		//BlockPhysicsLib.LogCommand(sender.getName(), cmd.toString());
 		}
 
 
 		//bounces commands back to user when database is offline
-		if (cmd.getName().equalsIgnoreCase("blockundo")) icase = 0;
-		if (cmd.getName().equalsIgnoreCase("undo")) icase = 1;
-		if (cmd.getName().equalsIgnoreCase("redo"))	 icase = 2;
-		if (cmd.getName().equalsIgnoreCase("query")) icase = 3;
-		if (cmd.getName().equalsIgnoreCase("purge")) icase = 4;
-		if (cmd.getName().equalsIgnoreCase("vaporize")) icase = 5;
-		
-		
-		if (!BlockUndoMySQL.mysql_online) 
-		{
-			BlockUndoLib.Chat(sender, "BlockUndo",  ChatColor.WHITE + "MySQL offline.");
-		return true;
-		}
-		
+		//if (cmd.getName().equalsIgnoreCase("blockundo")) icase = 0;
+		//if (cmd.getName().equalsIgnoreCase("undo")) icase = 1;
+		//if (cmd.getName().equalsIgnoreCase("redo"))	 icase = 2;
+
+	
+
 		switch (icase) 
 		{
 		case 0:
@@ -186,34 +146,23 @@ int icase = 0;
 		return true;
 		
 		case 1:
-		
-		if (args.length == 1) BlockUndoLib.UndoW(sender, args[0].toLowerCase());
+		//if (args.length == 1) BlockPhysicsLib.UndoW(sender, args[0].toLowerCase());
 		CMDinProgrss = false;
 		return true;
 		
 		case 2:
-			
-		if (args.length == 1) BlockUndoLib.RedoW(sender, args[0].toLowerCase());
+		//if (args.length == 1) BlockPhysicsLib.RedoW(sender, args[0].toLowerCase());
 		CMDinProgrss = false;
 		return true;
 		
 		case 3:
-		BlockUndoLib.GiveQ(sender, PLAYA);
+		//BlockPhysicsLib.GiveQ(sender, PLAYA);
 		CMDinProgrss = false;
 		return true;
 
-		case 4:
-		BlockUndoLib.PurgeW(sender);
-		CMDinProgrss = false;
-		return true;
-		
-		case 5:
-		BlockUndoLib.VaporW(sender);
-		CMDinProgrss = false;
-		return true;
-		
+
 		//case 6:
-		//BlockUndoLib.WaterW(sender);
+		//BlockPhysicsLib.WaterW(sender);
 		//CMDinProgrss = false;
 		//return true;
 		
