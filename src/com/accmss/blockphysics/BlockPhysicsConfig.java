@@ -6,56 +6,43 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
+
 
 /*
 # BlockPhysics
 
 Fire:
   NoFireSpread: ON
-  LogToConsole: ON
   ShowWarnings: ON
-
-Explosions:
-  CancelAllTNT: ON
-  CancelCreepa: ON
-  CancelWither: ON
-  CancelGhasts: ON
-
 Lava:
   NoGlobalFlow: ON
-  NoBucketFlow: ON
-  InfinitePool: ON
   ObsidianFlow: ON
-	
 Water:
   NoGlobalFlow: ON
-  NoBucketFlow: ON
-  InfinitePool: ON
   ObsidianFlow: ON
-
 Vines:
+  VinesOnBlock: ON
   NoVinesInAir: ON
-  SheersAssist: ON
  */
 
 
 //SYNC TO VERSION: 1
 
 
+// animal and monster limits?
+
 public class BlockPhysicsConfig {
 
-	//VARS - SETTINGS
-public static String MySQLMachine = null;
-public static String MySQLTCPPort = null;
-public static String MySQLDatabse = null;
-public static String MySQLUserAcc = null;
-public static String MySQLPasswrd = null;
-                     
-public static List<String>  Worlds = null;
+//VARS - SETTINGS
+public static boolean NoFireSpread = true;
+public static boolean ShowWarnings = true;
+public static boolean NoGlobalFlowL = true;
+public static boolean ObsidianFlowL = true;
+public static boolean NoGlobalFlowW = true;
+public static boolean ObsidianFlowW = true;
+public static boolean VinesOnBlock = true;
+public static boolean NoVinesInAir = true;
 
-public static String InfiniteOres = null;
-public static int RegenOreDays = 0;
 
 public static int ConfigYMLVer = 0;
 
@@ -73,19 +60,21 @@ public static void LoadSettings(String file)
 	//Ensure config
 	EnsureConfig();
 
-	//1 MySQL
-	MySQLMachine = BlockPhysics.zConfig.getString("Database.MySQLMachine", MySQLMachine);
-	MySQLTCPPort = BlockPhysics.zConfig.getString("Database.MySQLTCPPort", MySQLTCPPort);
-	MySQLDatabse = BlockPhysics.zConfig.getString("Database.MySQLDatabse", MySQLDatabse);
-	MySQLUserAcc = BlockPhysics.zConfig.getString("Database.MySQLUserAcc", MySQLUserAcc);
-	MySQLPasswrd = BlockPhysics.zConfig.getString("Database.MySQLPasswrd", MySQLPasswrd);
-
-	//2 World
-	Worlds = BlockPhysics.zConfig.getStringList("Worlds");
-
-	//3 Regeneration
-	InfiniteOres = BlockPhysics.zConfig.getString("Regeneration.InfiniteOres", InfiniteOres);
-	RegenOreDays = BlockPhysics.zConfig.getInt("Regeneration.RegenOreDays", RegenOreDays);
+	//1 Fire
+	NoFireSpread = BlockPhysics.zConfig.getBoolean("Fire.NoGlobalFlow", NoFireSpread);
+	ShowWarnings = BlockPhysics.zConfig.getBoolean("Fire.ObsidianFlow", ShowWarnings);
+	
+	//2 Lava
+	NoGlobalFlowL = BlockPhysics.zConfig.getBoolean("Lava.NoGlobalFlow", NoGlobalFlowL);
+	ObsidianFlowL = BlockPhysics.zConfig.getBoolean("Lava.ObsidianFlow", ObsidianFlowL);
+	
+	//3 Water
+	NoGlobalFlowW = BlockPhysics.zConfig.getBoolean("Water.NoGlobalFlow", NoGlobalFlowW);
+	ObsidianFlowW = BlockPhysics.zConfig.getBoolean("Water.ObsidianFlow", ObsidianFlowW);
+	
+	//4 Vines
+	VinesOnBlock = BlockPhysics.zConfig.getBoolean("Vines.VinesOnBlock", VinesOnBlock);
+	NoVinesInAir = BlockPhysics.zConfig.getBoolean("Vines.NoVinesInAir", NoVinesInAir);
 
 }
 
@@ -106,9 +95,17 @@ public static void SetSlash(String file)
 private static void EnsureConfig()
 {
 
+	File fileDir = new File("plugins" + SlashChar + "BlockPhysics");
 	String zFile = "plugins" + SlashChar + "BlockPhysics" + SlashChar + "config.yml";
 	File f = new File(zFile);
 
+		//Directory
+		if (!fileDir.exists())
+		{
+		fileDir.mkdir();
+		}
+
+		//File
 		if(!f.isFile())
 		{ 
 		BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(), "BlockPhysics", "§fWriting new configuration.yml.");
@@ -119,7 +116,7 @@ private static void EnsureConfig()
 		BlockPhysics.zConfig = BlockPhysics.zPlugin.getConfig();
 		}
 
-		//Update config
+		//Update
 	    try
 	    {ConfigYMLVer = BlockPhysics.zConfig.getInt("Version.ConfigYMLVer", ConfigYMLVer);}
 		catch (Exception e)

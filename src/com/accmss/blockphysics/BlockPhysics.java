@@ -20,7 +20,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
-
 public class BlockPhysics extends JavaPlugin  {
 
 	
@@ -69,22 +68,8 @@ public void onEnable() {
 	BlockPhysicsConfig.LoadSettings(zPlugin.getFile().getAbsolutePath());
 	
 
-
-	//Every 1 minute we divide clicks by idleM 
-	getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
-		public void run()
-		{
-
-		ticks++;
-			if (ticks > 59)
-			{
-
-			ticks = 0L;
-			}
-	    }
-	}, idelay + 4, repeat); //20 clicks to a second
-
-
+	WORLD = this.getServer().getWorld(this.getServer().getWorlds().get(0).getName());
+	LOCTA = WORLD.getSpawnLocation();
 	
 		//Metrics
 		try
@@ -129,7 +114,7 @@ int icase = 0;
 
 
 		//bounces commands back to user when database is offline
-		//if (cmd.getName().equalsIgnoreCase("blockundo")) icase = 0;
+		if (cmd.getName().equalsIgnoreCase("tpx")) icase = 0;
 		//if (cmd.getName().equalsIgnoreCase("undo")) icase = 1;
 		//if (cmd.getName().equalsIgnoreCase("redo"))	 icase = 2;
 
@@ -138,11 +123,7 @@ int icase = 0;
 		switch (icase) 
 		{
 		case 0:
-			if (args.length == 1) //assume reload
-			{
-			reloadConfig();
-			}
-		CMDinProgrss = false;
+		CMDinProgrss = true;
 		return true;
 		
 		case 1:

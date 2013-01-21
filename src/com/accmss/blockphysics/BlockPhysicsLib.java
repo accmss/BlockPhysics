@@ -6,6 +6,8 @@ import java.text.DecimalFormat;
 
 
 import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 //IMPORTS - BUKKIT
 import org.bukkit.command.CommandSender;
 
@@ -91,6 +93,53 @@ public static void LogCommand(String player, String command){
 }
 
 
+public static void Vaporize(Block c)
+{
 
+	//if 	(LastX == loc.getX() && LastY == loc.getY() && LastZ == loc.getZ()) return;
+
+	
+		int score = 0;
+		World world = c.getWorld();
+		Block b;
+
+		BlockPhysics.LOCTA.setWorld(c.getWorld());
+
+		BlockPhysics.LOCTA.setX(c.getX() +1);
+		BlockPhysics.LOCTA.setY(c.getY());
+		BlockPhysics.LOCTA.setZ(c.getZ());
+		b = world.getBlockAt(BlockPhysics.LOCTA);
+			if (b.getTypeId() == 0) score++;
+			
+		BlockPhysics.LOCTA.setX(c.getX() -1);
+		BlockPhysics.LOCTA.setY(c.getY());
+		BlockPhysics.LOCTA.setZ(c.getZ());
+		b = world.getBlockAt(BlockPhysics.LOCTA);
+			if (b.getTypeId() == 0)	score++;
+
+			if (score == 0) return;
+
+		BlockPhysics.LOCTA.setX(c.getX());
+		BlockPhysics.LOCTA.setY(c.getY());
+		BlockPhysics.LOCTA.setZ(c.getZ() +1);
+		b = world.getBlockAt(BlockPhysics.LOCTA);
+			if (b.getTypeId() == 0)	score++;
+			if (score == 1) return;
+
+		BlockPhysics.LOCTA.setX(c.getX());
+		BlockPhysics.LOCTA.setY(c.getY());
+		BlockPhysics.LOCTA.setZ(c.getZ() -1);
+		b = world.getBlockAt(BlockPhysics.LOCTA);
+			if (b.getTypeId() == 0) score++;
+		
+
+		if (score>=3)
+		{
+		c.setTypeIdAndData(0, (byte)0, true);
+		}
+
+			
+
+}
 
 }

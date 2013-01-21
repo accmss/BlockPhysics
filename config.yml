@@ -2,27 +2,15 @@
 
 Fire:
   NoFireSpread: ON
-  LogToConsole: ON
   ShowWarnings: ON
-
-Explosions:
-  CancelAllTNT: ON
-  CancelCreepa: ON
-  CancelWither: ON
-  CancelGhasts: ON
-
 Lava:
   NoGlobalFlow: ON
-  NoBucketFlow: ON
-  InfinitePool: ON
   ObsidianFlow: ON
-	
 Water:
   NoGlobalFlow: ON
-  NoBucketFlow: ON
-  InfinitePool: ON
   ObsidianFlow: ON
-
 Vines:
+  VinesOnBlock: ON
   NoVinesInAir: ON
-  SheersAssist: ON
+Version:
+  ConfigYMLVer: 1
