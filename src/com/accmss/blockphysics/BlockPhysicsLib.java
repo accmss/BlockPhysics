@@ -3,22 +3,27 @@ package com.accmss.blockphysics;
 
 //IMPORTS - JAVA
 import java.text.DecimalFormat;
+import java.util.List;
 
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 //IMPORTS - BUKKIT
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 
 
 
-public class BlockPhysicsLib {
+public class BlockPhysicsLib
+{
 
 	
 
 //VARS
-
+public static List<EntityType> tl;
 
 
 
@@ -139,6 +144,67 @@ public static void Vaporize(Block c)
 		}
 
 			
+
+}
+
+public static void ClearEntities()
+{
+
+int c1 = 0;
+int c2 = 0;
+String color = null;
+String graph1 = null;
+String graph2 = null;
+
+	for (EntityType zEntityType : tl)
+	{
+		c1 = CountEntities(zEntityType, 64);
+
+	
+		if (c1 == 0)	{continue;}
+
+		if (c1 > 00)	{color = "§a";}
+		if (c1 > 32)	{color = "§e";}
+		if (c1 > 48)	{color = "§c";}
+	c1 = c1 / 2;
+	c2 = 32 - c1;
+	graph1 = StringUtils.leftPad("", c1, "|");
+	graph2 = StringUtils.leftPad("", c2, "|");
+	BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(),  "BlockPhysics", color + graph1 + "§8"+ graph2 + "§f " + zEntityType.getName());
+	}
+
+}
+
+
+public static int CountEntities(EntityType zEntityType, int limit)
+{
+int c = 0;
+
+
+	for (World world : BlockPhysics.zPlugin.getServer().getWorlds())
+	{
+
+		for (Entity entity : world.getEntities())
+		{
+						 
+			if (entity.getType() == zEntityType)
+			{
+				if (c >= (limit -4)) //NEW allows for re-spawning
+				{
+				entity.remove();
+				}
+				else
+				{
+				c++;
+				}
+
+			}
+
+		}
+		
+	}
+	
+return c;
 
 }
 

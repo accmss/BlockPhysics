@@ -5,6 +5,8 @@ package com.accmss.blockphysics;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 
@@ -15,17 +17,29 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
+//IMPORTS - GOOGLE
+import com.google.common.collect.Lists;
+
+
+
+
+
 public class BlockPhysics extends JavaPlugin  {
+
 
 	
 public static BlockPhysics zPlugin;
 protected static FileConfiguration zConfig;
 public static Logger zLogger = Logger.getLogger("Minecraft");
+
+
+public static Map<String, String> loadedChunks = new HashMap<String, String>();
 
 
 //VARS
@@ -42,8 +56,10 @@ public static int blocks_cache_redo = 7;
 
 public static boolean CMDinProgrss  = false; 
 
-public static String format_7zeros = "0,000,000";
-public static String format_4zeros = "0000";
+
+//public static boolean initial_flowL = false;
+//public static boolean initial_flowW = false;
+
 
 
 public static long thread = 0L;
@@ -51,6 +67,8 @@ public static long ticks = 0L;
 
 static long idelay = 0L;
 static long repeat = 1200L * 1L; // 1200 = 60 seconds
+
+static long mod = 0; // 1200 = 60 seconds
 
 @Override
 public void onEnable() {
@@ -83,7 +101,49 @@ public void onEnable() {
 	//Listners
 	getServer().getPluginManager().registerEvents(new BlockPhysicsPlayer(this), this);
 	getServer().getPluginManager().registerEvents(new BlockPhysicsBlocks(this), this);
+	//getServer().getPluginManager().registerEvents(new BlockPhysicsWorld(this), this);
 		
+	
+	BlockPhysicsLib.tl = Lists.newArrayList();
+    for (EntityType t : EntityType.values())
+    {
+        if (t != EntityType.PLAYER && t != EntityType.FALLING_BLOCK)
+        {
+        BlockPhysicsLib.tl.add(t);
+        }
+
+    }
+
+    
+
+	
+
+	zPlugin.getServer().getScheduler().runTaskTimerAsynchronously(zPlugin, new Runnable() {
+		public void run()
+		{
+		
+			if (BlockPhysicsConfig.MeridianDays)
+			{
+			WORLD.setTime(15000);
+			}
+			if (BlockPhysicsConfig.MeridianRain)
+			{
+			WORLD.setStorm(true);
+			WORLD.setThundering(true);
+			WORLD.setThunderDuration(20 * 60 * 4); //4 MINUTES
+			}
+
+
+			if ((mod % 12) == 0)
+			{
+			BlockPhysicsLib.ClearEntities();
+			}
+		mod++;
+		}
+	}, 4L, 20L * 60L * 5L); //20 clicks to a second - 5 Minutes
+
+	
+
 }
 @Override
 public void onDisable() 
@@ -114,8 +174,8 @@ int icase = 0;
 
 
 		//bounces commands back to user when database is offline
-		if (cmd.getName().equalsIgnoreCase("tpx")) icase = 0;
-		//if (cmd.getName().equalsIgnoreCase("undo")) icase = 1;
+		if (cmd.getName().equalsIgnoreCase("flowon")) icase = 0;
+		if (cmd.getName().equalsIgnoreCase("flowoff")) icase = 1;
 		//if (cmd.getName().equalsIgnoreCase("redo"))	 icase = 2;
 
 	
@@ -123,11 +183,20 @@ int icase = 0;
 		switch (icase) 
 		{
 		case 0:
+		BlockPhysics.zPlugin.getServer().broadcastMessage("[BlockPhysics] §bLiquid flow enabled.");
+		BlockPhysicsConfig.NoGlobalFlowL = false;
+		BlockPhysicsConfig.NoGlobalFlowW = false;
+		BlockPhysics.zConfig.set("Lava.NoGlobalFlow", BlockPhysicsConfig.NoGlobalFlowL);
+		BlockPhysics.zConfig.set("Water.NoGlobalFlow", BlockPhysicsConfig.NoGlobalFlowW);
 		CMDinProgrss = true;
 		return true;
 		
 		case 1:
-		//if (args.length == 1) BlockPhysicsLib.UndoW(sender, args[0].toLowerCase());
+		BlockPhysics.zPlugin.getServer().broadcastMessage("[BlockPhysics] §bLiquid flow disabled.");
+		BlockPhysicsConfig.NoGlobalFlowL = true;
+		BlockPhysicsConfig.NoGlobalFlowW = true;
+		BlockPhysics.zConfig.set("Lava.NoGlobalFlow", BlockPhysicsConfig.NoGlobalFlowL);
+		BlockPhysics.zConfig.set("Water.NoGlobalFlow", BlockPhysicsConfig.NoGlobalFlowW);
 		CMDinProgrss = false;
 		return true;
 		
@@ -153,7 +222,12 @@ int icase = 0;
 		return false; 
 
 	}
-		
+	
+
+
+
+
+	
 
 
 }

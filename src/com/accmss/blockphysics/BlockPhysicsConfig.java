@@ -23,6 +23,9 @@ Water:
 Vines:
   VinesOnBlock: ON
   NoVinesInAir: ON
+World:
+  MeridianDays: OFF
+  MeridianRain: OFF
  */
 
 
@@ -36,12 +39,19 @@ public class BlockPhysicsConfig {
 //VARS - SETTINGS
 public static boolean NoFireSpread = true;
 public static boolean ShowWarnings = true;
+
 public static boolean NoGlobalFlowL = true;
 public static boolean ObsidianFlowL = true;
+public static boolean FireWalkLava = true;
+public static boolean VaporizeLava = true;
+
 public static boolean NoGlobalFlowW = true;
 public static boolean ObsidianFlowW = true;
 public static boolean VinesOnBlock = true;
 public static boolean NoVinesInAir = true;
+
+public static boolean MeridianDays = true;
+public static boolean MeridianRain = true;
 
 
 public static int ConfigYMLVer = 0;
@@ -49,7 +59,7 @@ public static int ConfigYMLVer = 0;
 
 //VARS - SETTINGS
 public static String SlashChar = null;
-public static int SyncVers = 1;
+public static int SyncVers = 3; //1-first //2-FireWalking //3-Meridian Climate
 	
 public static void LoadSettings(String file)
 {
@@ -67,6 +77,8 @@ public static void LoadSettings(String file)
 	//2 Lava
 	NoGlobalFlowL = BlockPhysics.zConfig.getBoolean("Lava.NoGlobalFlow", NoGlobalFlowL);
 	ObsidianFlowL = BlockPhysics.zConfig.getBoolean("Lava.ObsidianFlow", ObsidianFlowL);
+	FireWalkLava = BlockPhysics.zConfig.getBoolean("Lava.FireWalkLava", FireWalkLava);
+	VaporizeLava = BlockPhysics.zConfig.getBoolean("Lava.VaporizeLava", VaporizeLava);
 	
 	//3 Water
 	NoGlobalFlowW = BlockPhysics.zConfig.getBoolean("Water.NoGlobalFlow", NoGlobalFlowW);
@@ -75,6 +87,10 @@ public static void LoadSettings(String file)
 	//4 Vines
 	VinesOnBlock = BlockPhysics.zConfig.getBoolean("Vines.VinesOnBlock", VinesOnBlock);
 	NoVinesInAir = BlockPhysics.zConfig.getBoolean("Vines.NoVinesInAir", NoVinesInAir);
+	
+	//5 Climate
+	MeridianDays = BlockPhysics.zConfig.getBoolean("Climate.MeridianDays", MeridianDays);
+	MeridianRain = BlockPhysics.zConfig.getBoolean("Climate.MeridianRain", MeridianRain);
 
 }
 
