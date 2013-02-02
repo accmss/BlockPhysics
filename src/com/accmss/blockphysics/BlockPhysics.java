@@ -122,15 +122,31 @@ public void onEnable() {
 		public void run()
 		{
 		
+			//DAYS
 			if (BlockPhysicsConfig.MeridianDays)
 			{
-			WORLD.setTime(15000);
+
+				if (WORLD.getTime() > 5000)
+				{
+				WORLD.setTime(13000);
+				}
+				
 			}
+			
+			
+			//STORMS
 			if (BlockPhysicsConfig.MeridianRain)
 			{
-			WORLD.setStorm(true);
-			WORLD.setThundering(true);
-			WORLD.setThunderDuration(20 * 60 * 4); //4 MINUTES
+				if (WORLD.getTime() > 5000)
+				{
+				WORLD.setStorm(true);
+				}
+				else
+				{
+				WORLD.setStorm(true);
+				WORLD.setThundering(true);
+				WORLD.setThunderDuration(20 * 60 * 3); //4 MINUTES	
+				}
 			}
 
 
@@ -140,7 +156,7 @@ public void onEnable() {
 			}
 		mod++;
 		}
-	}, 4L, 20L * 60L * 5L); //20 clicks to a second - 5 Minutes
+	}, 32L, 20L * 60L * 5L); //20 clicks to a second - 5 Minutes
 
 	
 
@@ -183,7 +199,7 @@ int icase = 0;
 		switch (icase) 
 		{
 		case 0:
-		BlockPhysics.zPlugin.getServer().broadcastMessage("[BlockPhysics] §bLiquid flow enabled.");
+		BlockPhysics.zPlugin.getServer().broadcastMessage("[BlockPhysics] §9Liquid flow enabled.");
 		BlockPhysicsConfig.NoGlobalFlowL = false;
 		BlockPhysicsConfig.NoGlobalFlowW = false;
 		BlockPhysics.zConfig.set("Lava.NoGlobalFlow", BlockPhysicsConfig.NoGlobalFlowL);
@@ -192,7 +208,7 @@ int icase = 0;
 		return true;
 		
 		case 1:
-		BlockPhysics.zPlugin.getServer().broadcastMessage("[BlockPhysics] §bLiquid flow disabled.");
+		BlockPhysics.zPlugin.getServer().broadcastMessage("[BlockPhysics] §9Liquid flow disabled.");
 		BlockPhysicsConfig.NoGlobalFlowL = true;
 		BlockPhysicsConfig.NoGlobalFlowW = true;
 		BlockPhysics.zConfig.set("Lava.NoGlobalFlow", BlockPhysicsConfig.NoGlobalFlowL);

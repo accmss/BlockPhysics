@@ -151,6 +151,7 @@ public void onBlockPhysics(BlockPhysicsEvent event)
 			//{
 				//if (!BlockPhysicsConfig.VinesOnBlock)
 				//{
+				//event.getBlock().setType(Material.AIR);
 				//BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(), "BlockPhysics-Event3:   ", event.getBlock().getType().toString() + " : " + event.getBlock().getLocation().toVector().toString());
 				//event.getBlock().setType(Material.AIR);
 				//event.setCancelled(true);
@@ -194,7 +195,7 @@ public void onFireStart (BlockIgniteEvent event)
 
 			Pyro = event.getPlayer().getName().toString();
 			//screen
-			BlockPhysics.zPlugin.getServer().broadcastMessage("§f" + Pyro  + " §eset fire to " + event.getBlock().getType().toString());
+			BlockPhysics.zPlugin.getServer().broadcastMessage("§f" + Pyro  + " §eset fire to " + event.getBlock().getRelative(BlockFace.DOWN) .getType().toString());
 			//BlockPhysics.zPlugin.getServer().broadcast(event.getPlayer().getName().toString()  + "§6 lit §f" + event.getBlock().getType().toString()  + "§6 on fire!","");
 			//console
 			//BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(), "BlockPhysics", event.getPlayer().getName().toString()  + "§6 lit a fire!");
@@ -270,25 +271,62 @@ Entity damagee = event.getEntity();
 	if (damagee instanceof Player) 
 	{
 
-
+                            //AquaDiamonds
 		if(BlockPhysicsConfig.VaporizeLava)
 		{
 		Player p = ((Player) damagee);
-		Block b = p.getWorld().getBlockAt(p.getLocation());
+		Block b1 = p.getWorld().getBlockAt(p.getLocation());
+		Block b2 = p.getWorld().getBlockAt(p.getLocation());
+		
 			//Fire walker
-			if (b.getType() == Material.LAVA || b.getType() == Material.STATIONARY_LAVA)
+			if (b1.getType() == Material.LAVA || b1.getType() == Material.STATIONARY_LAVA)
 			{
-			p.playSound(b.getLocation(), Sound.FIZZ,  (float)100, (float)1);
-			b.setType(Material.AIR);
-			b.getRelative(BlockFace.UP);
+			p.playSound(b1.getLocation(), Sound.FIZZ,  (float)100, (float)1);
+			{b1.setTypeId(9, false);}
 			}
 
-			if (b.getType() == Material.LAVA || b.getType() == Material.STATIONARY_LAVA)
-			{
-			b.setType(Material.AIR);
-			}
-		}
+
+			b2 = b1.getRelative(BlockFace.NORTH);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+			b2 = b1.getRelative(BlockFace.SOUTH);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+			b2 = b1.getRelative(BlockFace.EAST);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+			b2 = b1.getRelative(BlockFace.WEST);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+			b2 = b1.getRelative(BlockFace.NORTH_EAST);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+			b2 = b1.getRelative(BlockFace.NORTH_WEST);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+			b2 = b1.getRelative(BlockFace.SOUTH_EAST);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+			b2 = b1.getRelative(BlockFace.SOUTH_WEST);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
 	
+	
+			b1 = b1.getRelative(BlockFace.UP);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+				
+			b2 = b1.getRelative(BlockFace.NORTH);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+			b2 = b1.getRelative(BlockFace.SOUTH);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+			b2 = b1.getRelative(BlockFace.EAST);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+			b2 = b1.getRelative(BlockFace.WEST);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+			b2 = b1.getRelative(BlockFace.NORTH_EAST);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+			b2 = b1.getRelative(BlockFace.NORTH_WEST);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+			b2 = b1.getRelative(BlockFace.SOUTH_EAST);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+			b2 = b1.getRelative(BlockFace.SOUTH_WEST);
+				if (b2.getType() == Material.LAVA || b2.getType() == Material.STATIONARY_LAVA) {b2.setTypeId(9, false);}
+	
+	
+			}
+
 		if(BlockPhysicsConfig.FireWalkLava)
 		{
 			if (damagee.getFireTicks() > 0) 

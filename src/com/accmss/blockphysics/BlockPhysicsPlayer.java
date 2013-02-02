@@ -4,11 +4,13 @@ package com.accmss.blockphysics;
 //IMPORTS - BUKKIT
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 
 
 public class BlockPhysicsPlayer implements Listener 
@@ -22,6 +24,70 @@ public BlockPhysicsPlayer(BlockPhysics xPlugin)
 }
 
 
+@EventHandler (priority = EventPriority.NORMAL)
+public void onPlayerBucketFill(final PlayerBucketFillEvent event)
+{
+
+final Material m;
+Block b1;
+Block b2;
+
+	if (!BlockPhysicsConfig.InfiniteFlowW && !BlockPhysicsConfig.InfiniteFlowL) {return; }
+
+	b1 = event.getBlockClicked();
+	b2 = b1.getRelative(BlockFace.NORTH);
+	
+	    // 1 > 1 = -1 in java
+		if (b2.getTypeId() < 7 || b2.getTypeId() > 11) 
+		{return; }
+
+	b2 = b1.getRelative(BlockFace.SOUTH);
+		
+		if (b2.getTypeId() < 7 || b2.getTypeId() > 11) 
+		{return; }
+
+	b2 = b1.getRelative(BlockFace.EAST);
+		
+		if (b2.getTypeId() < 7 || b2.getTypeId() > 11)  
+		{return; }
+
+	b2 = b1.getRelative(BlockFace.WEST);
+		
+		if (b2.getTypeId() < 7 || b2.getTypeId() > 11) 
+		{return; }
+
+		
+
+	m = event.getBlockClicked().getType();
+	
+			//INFINITE WATER/LAVA
+			BlockPhysics.zPlugin.getServer().getScheduler().runTaskLaterAsynchronously(BlockPhysics.zPlugin, new Runnable()
+			{
+				public void run()
+				{
+
+					if (m == Material.STATIONARY_LAVA || m == Material.LAVA)
+					{
+						if (BlockPhysicsConfig.InfiniteFlowL)
+						{
+						BlockPhysics.BLOCK = event.getBlockClicked().getWorld().getBlockAt(event.getBlockClicked().getX(), event.getBlockClicked().getY(), event.getBlockClicked().getZ());
+						BlockPhysics.BLOCK.setTypeId(11, false);
+						}
+					}
+					else
+					{
+						if (BlockPhysicsConfig.InfiniteFlowW)
+						{
+						BlockPhysics.BLOCK = event.getBlockClicked().getWorld().getBlockAt(event.getBlockClicked().getX(), event.getBlockClicked().getY(), event.getBlockClicked().getZ());
+						BlockPhysics.BLOCK.setTypeId(9, false);
+						}
+					}
+
+				}
+			}, 1L); 
+
+
+}
 @EventHandler (priority = EventPriority.NORMAL)
 public void onPlayerBucketEmpty(final PlayerBucketEmptyEvent event)
 {

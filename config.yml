@@ -5,11 +5,13 @@ Fire:
   ShowWarnings: ON
 Lava:
   NoGlobalFlow: ON
+  InfiniteFlow: ON
   ObsidianFlow: ON
   FireWalkLava: ON
   VaporizeLava: ON
 Water:
   NoGlobalFlow: ON
+  InfiniteFlow: ON
   ObsidianFlow: ON
 Vines:
   VinesOnBlock: ON
@@ -18,4 +20,4 @@ Climate:
   MeridianDays: OFF
   MeridianRain: OFF
 Version:
-  ConfigYMLVer: 3
+  ConfigYMLVer: 4

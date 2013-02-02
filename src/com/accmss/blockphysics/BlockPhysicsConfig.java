@@ -29,7 +29,7 @@ World:
  */
 
 
-//SYNC TO VERSION: 1
+//SYNC TO VERSION: 4
 
 
 // animal and monster limits?
@@ -41,11 +41,13 @@ public static boolean NoFireSpread = true;
 public static boolean ShowWarnings = true;
 
 public static boolean NoGlobalFlowL = true;
+public static boolean InfiniteFlowL = true;
 public static boolean ObsidianFlowL = true;
 public static boolean FireWalkLava = true;
 public static boolean VaporizeLava = true;
 
 public static boolean NoGlobalFlowW = true;
+public static boolean InfiniteFlowW = true;
 public static boolean ObsidianFlowW = true;
 public static boolean VinesOnBlock = true;
 public static boolean NoVinesInAir = true;
@@ -59,7 +61,7 @@ public static int ConfigYMLVer = 0;
 
 //VARS - SETTINGS
 public static String SlashChar = null;
-public static int SyncVers = 3; //1-first //2-FireWalking //3-Meridian Climate
+public static int SyncVers = 4; //1-first //2-FireWalking //3-Meridian Climate
 	
 public static void LoadSettings(String file)
 {
@@ -76,12 +78,14 @@ public static void LoadSettings(String file)
 	
 	//2 Lava
 	NoGlobalFlowL = BlockPhysics.zConfig.getBoolean("Lava.NoGlobalFlow", NoGlobalFlowL);
+	InfiniteFlowL = BlockPhysics.zConfig.getBoolean("Lava.InfiniteFlow", InfiniteFlowL);
 	ObsidianFlowL = BlockPhysics.zConfig.getBoolean("Lava.ObsidianFlow", ObsidianFlowL);
 	FireWalkLava = BlockPhysics.zConfig.getBoolean("Lava.FireWalkLava", FireWalkLava);
 	VaporizeLava = BlockPhysics.zConfig.getBoolean("Lava.VaporizeLava", VaporizeLava);
 	
 	//3 Water
 	NoGlobalFlowW = BlockPhysics.zConfig.getBoolean("Water.NoGlobalFlow", NoGlobalFlowW);
+	InfiniteFlowW = BlockPhysics.zConfig.getBoolean("Water.InfiniteFlow", InfiniteFlowW);
 	ObsidianFlowW = BlockPhysics.zConfig.getBoolean("Water.ObsidianFlow", ObsidianFlowW);
 	
 	//4 Vines
