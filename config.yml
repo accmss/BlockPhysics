@@ -1,7 +1,18 @@
-# CoralSea
+# BlockPhysics
 
-Terrain:
-  WildSeaCaves: ON
-  WildSeaCoral: ON
+Fire:
+  NoFireSpread: ON
+  ShowWarnings: ON
+Lava:
+  NoGlobalFlow: ON
+  InfiniteFlow: ON
+  ObsidianFlow: ON
+Water:
+  NoGlobalFlow: ON
+  InfiniteFlow: ON
+  ObsidianFlow: ON
+Vines:
+  VinesOnBlock: ON
+  NoVinesInAir: ON
 Version:
-  ConfigYMLVer: 1
+  ConfigYMLVer: 5
