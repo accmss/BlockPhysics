@@ -1,23 +1,7 @@
-# BlockPhysics
+# CoralSea
 
-Fire:
-  NoFireSpread: ON
-  ShowWarnings: ON
-Lava:
-  NoGlobalFlow: ON
-  InfiniteFlow: ON
-  ObsidianFlow: ON
-  FireWalkLava: ON
-  VaporizeLava: ON
-Water:
-  NoGlobalFlow: ON
-  InfiniteFlow: ON
-  ObsidianFlow: ON
-Vines:
-  VinesOnBlock: ON
-  NoVinesInAir: ON
-Climate:
-  MeridianDays: OFF
-  MeridianRain: OFF
+Terrain:
+  WildSeaCaves: ON
+  WildSeaCoral: ON
 Version:
-  ConfigYMLVer: 4
+  ConfigYMLVer: 1

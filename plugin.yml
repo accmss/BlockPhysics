@@ -1,16 +1,6 @@
-name: BlockPhysics
-main: com.accmss.blockphysics.BlockPhysics
+name: CoralSea
+main: com.accmss.coralsea.CoralSea
 version: 1.5.5
-description: BlockPhysics permissions.
+description: CoralSea permissions.
 
 commands:
-   flowon:
-      description: Enables liquid flow
-      usage: /flowon
-      permission: blockphysics.admin
-      permisison-message: You don't have permissions
-   flowoff:
-      description: Disables liquid flow
-      usage: /flowoff
-      permission: blockphysics.admin
-      permisison-message: You don't have permissions

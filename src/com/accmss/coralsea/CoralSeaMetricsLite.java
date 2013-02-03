@@ -26,7 +26,7 @@
  * either expressed or implied, of anybody else.
  */
 
-package com.accmss.blockphysics;
+package com.accmss.coralsea;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -48,7 +48,7 @@ import java.net.URLEncoder;
 import java.util.UUID;
 import java.util.logging.Level;
 
-public class BlockPhysicsMetricsLite {
+public class CoralSeaMetricsLite {
 
     /**
      * The current revision number
@@ -105,7 +105,7 @@ public class BlockPhysicsMetricsLite {
      */
     private volatile BukkitTask task = null;
 
-    public BlockPhysicsMetricsLite(Plugin plugin) throws IOException {
+    public CoralSeaMetricsLite(Plugin plugin) throws IOException {
         if (plugin == null) {
             throw new IllegalArgumentException("Plugin cannot be null");
         }
