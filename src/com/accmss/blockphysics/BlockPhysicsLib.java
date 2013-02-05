@@ -151,6 +151,10 @@ public static void Vaporize(Block c)
 public static void ClearEntities()
 {
 
+int max0 = 0;
+int max1 = 64;
+int max2 = 256;
+int scale = 0;
 int c0 = 0;
 int c1 = 0;
 int c2 = 0;
@@ -160,19 +164,33 @@ String graph2 = null;
 
 	for (EntityType zEntityType : tl)
 	{
-	c0 = CountEntities(zEntityType, 64);
+		
+		if (zEntityType == EntityType.PAINTING
+	    || zEntityType == EntityType.ITEM_FRAME
+		|| zEntityType == EntityType.DROPPED_ITEM)
+		{
+		max0 = max2;
+		scale = 8;
+		}
+		else
+		{
+		max0 = max1;
+		scale = 2;	
+		}
+		
+	c0 = CountEntities(zEntityType, max0);
 
 	
 		if (c0 == 0)	{continue;}
 
-		if (c0 > 00)	{color = "§a";}
-		if (c0 > 32)	{color = "§e";}
-		if (c0 > 48)	{color = "§c";}
-	c1 = c0 / 2;
-	c2 = 32 - c1;
+		if (c0 > 00)			{color = "§a";}
+		if (c0 > (max0 * .50))	{color = "§e";}
+		if (c0 > (max0 * .75))	{color = "§c";}
+	c1 = c0 / scale; //filled elements
+	c2 = (max0 / scale) - c1;   //empy elements
 	graph1 = StringUtils.leftPad("", c1, "|");
 	graph2 = StringUtils.leftPad("", c2, "|");
-	BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(),  "BlockPhysics", color + graph1 + "§8"+ graph2 + " " + color + String.format("%02d", c0) + "§f " + zEntityType.getName());
+	BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(),  "BlockPhysics", color + graph1 + "§8"+ graph2 + " " + color + String.format("%03d", c0) + "§8/" + String.format("%03d", max0) + " §f " + zEntityType.getName());
 	}
 
 }
