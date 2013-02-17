@@ -25,63 +25,99 @@ public BlockPhysicsPlayer(BlockPhysics xPlugin)
 
 
 @EventHandler (priority = EventPriority.NORMAL)
-public void onPlayerBucketFill(final PlayerBucketFillEvent event)
+public void onPlayerBucketFill(PlayerBucketFillEvent event)
 {
 
-//NEW needs 3 minimum surround lava from a search pattern -|- in basic 3d (6) .:. 50% or more surrounding fluid before infinite water block is set
-	
-final Material m;
-Block b1;
-Block b2;
-int c = 0;
-
-	if (!BlockPhysicsConfig.InfiniteFlowW && !BlockPhysicsConfig.InfiniteFlowL) {return; }
-
-	m = event.getBlockClicked().getType();
-	BlockPhysics.BLOCK = event.getBlockClicked().getWorld().getBlockAt(event.getBlockClicked().getX(), event.getBlockClicked().getY(), event.getBlockClicked().getZ());
-
-	b1 = event.getBlockClicked();
-	b2 = b1.getRelative(BlockFace.NORTH);
-
-	    // 1 > 1 = -1 in java
-		if (b2.getTypeId() < 7 || b2.getTypeId() > 11) 
-		{c++; }
-
-	b2 = b1.getRelative(BlockFace.SOUTH);
-
-		if (b2.getTypeId() < 7 || b2.getTypeId() > 11) 
-		{c++; }
-
-	b2 = b1.getRelative(BlockFace.EAST);
+//NEW needs 3 (from 6) minimum surround lava from a search pattern -|- in basic 3d (6) .:. 50% or more surrounding fluid before infinite water block is set
+	event.getBlockClicked().setTypeId(0, false);
+	TestFlow(event.getBlockClicked());
 		
-		if (b2.getTypeId() < 7 || b2.getTypeId() > 11)  
-		{c++; }
+}
 
-		if (c >= 3) {FillFluid(m);}
+public void TestFlow(final Block block)
+{
+
+	Material m;
+	Block b2;
+    int c = 0;
+    
+		//BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(), "[Return0]", "");
+
+		if (!BlockPhysicsConfig.InfiniteFlowW && !BlockPhysicsConfig.InfiniteFlowL) {return; }
+
 		
-	b2 = b1.getRelative(BlockFace.WEST);
+		m = block.getType();
+		b2 = block.getRelative(BlockFace.NORTH);
+		BlockPhysics.BLOCK = block;//event.getBlockClicked().getWorld().getBlockAt(event.getBlockClicked().getX(), event.getBlockClicked().getY(), event.getBlockClicked().getZ());
 
-		if (b2.getTypeId() < 7 || b2.getTypeId() > 11) 
-		{c++; }
+			// 1 > 1 = -1 in java
+			if (b2.getTypeId() >= 8 && b2.getTypeId() <= 11) 
+			{c++; }
+
+		b2 = block.getRelative(BlockFace.SOUTH);
+		//b2.setTypeId(41,false);
 		
-		if (c <= 0) {return; } //EXIT ON 0
-		if (c >= 3) {FillFluid(m);}
+			if (b2.getTypeId() >= 8 && b2.getTypeId() <= 11) 
+			{c++; }
+
+		b2 = block.getRelative(BlockFace.EAST);
+		//b2.setTypeId(42,false);
 		
-	b2 = b1.getRelative(BlockFace.UP);
+			if (b2.getTypeId() >= 8 && b2.getTypeId() <= 11)  
+			{c++; }
 
-		if (b2.getTypeId() < 7 || b2.getTypeId() > 11) 
-		{c++; }
+			if (c >= 3)
+			{
+			FillFluid(m);
+			return;
+			}
+			
+		b2 = block.getRelative(BlockFace.WEST);
 
-		if (c <= 1) {return; } //EXIT ON 1
-		if (c >= 3) {FillFluid(m);}
-		
-	b2 = b1.getRelative(BlockFace.DOWN);
+			if (b2.getTypeId() >= 8 && b2.getTypeId() <= 11) 
+			{c++; }
+			
+			if (c <= 0)
+			{
+			return;
+			} //EXIT ON 0
+			if (c >= 3)
+			{
+			FillFluid(m);
+			return;
+			}
+			
+		b2 = block.getRelative(BlockFace.UP);
 
-		if (b2.getTypeId() < 7 || b2.getTypeId() > 11) 
-		{c++; }
+			if (b2.getTypeId() >= 8 && b2.getTypeId() <= 11) 
+			{c++; }
 
-		if (c <= 2) {return; } //EXIT ON 2
-		if (c >= 3) {FillFluid(m);}
+			if (c <= 1)
+			{
+			return;
+			} //EXIT ON 1
+			if (c >= 3)
+			{
+			FillFluid(m);
+			return;
+			}
+			
+		b2 = block.getRelative(BlockFace.DOWN);
+
+			if (b2.getTypeId() >= 8 && b2.getTypeId() <= 11) 
+			{
+			c++;
+			}
+
+			if (c <= 2)
+			{
+			return;
+			} //EXIT ON 2
+			if (c >= 3)
+			{
+			FillFluid(m);
+			return;
+			}
 
 }
 

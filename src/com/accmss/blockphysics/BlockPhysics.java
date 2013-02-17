@@ -70,10 +70,11 @@ public void onEnable() {
 	
 	zPlugin = this;
 
+	
 	//Settings
 	BlockPhysicsConfig.LoadSettings(zPlugin.getFile().getAbsolutePath());
 	
-
+	
 	WORLD = this.getServer().getWorld(this.getServer().getWorlds().get(0).getName());
 	LOCTA = WORLD.getSpawnLocation();
 	
@@ -85,7 +86,7 @@ public void onEnable() {
 		BlockPhysicsMetricsLite metrics = new BlockPhysicsMetricsLite(this);
 		metrics.start();
 		} catch (IOException e) {
-		BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(), "[MetricsLite]", e.getCause() + " : " + e.getMessage());
+		BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(), "MetricsLite", e.getCause() + " : " + e.getMessage());
 		}
 
 	//Listners
@@ -116,7 +117,16 @@ public void onEnable() {
 		}
 	}, 256L, 20L * 60L * 60L); //20 clicks to a second - 5 Minutes
 
+	if (!BlockPhysicsConfig.NoGlobalFlowW)
+	{
+	BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(), "BlockPhysics", "§9Water flow on!");
+	}
 	
+	if (!BlockPhysicsConfig.NoGlobalFlowL)
+	{
+	BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(), "BlockPhysics", "§9Lava flow on!");
+	}
+
 
 }
 @Override

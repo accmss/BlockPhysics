@@ -63,12 +63,15 @@ public static int SyncVers = 5; //1-first //2-FireWalking //3-Meridian Climate
 public static void LoadSettings(String file)
 {
 
+	
 	//Slash
 	SetSlash(file);
 
+	
 	//Ensure config
 	EnsureConfig();
 
+	
 	//1 Fire
 	NoFireSpread = BlockPhysics.zConfig.getBoolean("Fire.NoGlobalFlow", NoFireSpread);
 	ShowWarnings = BlockPhysics.zConfig.getBoolean("Fire.ObsidianFlow", ShowWarnings);

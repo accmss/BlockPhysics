@@ -178,6 +178,7 @@ String graph2 = null;
 		scale = 2;	
 		}
 		
+		
 	c0 = CountEntities(zEntityType, max0);
 
 	
@@ -200,29 +201,36 @@ public static int CountEntities(EntityType zEntityType, int limit)
 {
 int c = 0;
 
-
-	for (World world : BlockPhysics.zPlugin.getServer().getWorlds())
+	try
 	{
-
-		for (Entity entity : world.getEntities())
+		for (World world : BlockPhysics.zPlugin.getServer().getWorlds())
 		{
-						 
-			if (entity.getType() == zEntityType)
+	
+			for (Entity entity : world.getEntities())
 			{
-				if (c >= (limit -4)) //NEW allows for re-spawning
+							 
+				if (entity.getType() == zEntityType)
 				{
-				entity.remove();
+					if (c >= (limit -4)) //NEW allows for re-spawning
+					{
+					entity.remove();
+					}
+					else
+					{
+					c++;
+					}
+	
 				}
-				else
-				{
-				c++;
-				}
-
+	
 			}
-
+			
 		}
-		
+	} 
+	catch (Exception e)
+	{
+	BlockPhysicsLib.Chat(BlockPhysics.zPlugin.getServer().getConsoleSender(), "BlockPhysics", e.getCause() + " : " + e.getMessage());
 	}
+
 	
 return c;
 
