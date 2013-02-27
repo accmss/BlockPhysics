@@ -89,7 +89,7 @@ int k = 0;
 public static void Chat(CommandSender sender, String PluginName, String message)
 {
 
-	sender.sendMessage("[" + PluginName + "] " + message);
+	sender.sendMessage("" + PluginName + " " + message);
 	
 }
 public static void LogCommand(String player, String command){
@@ -211,7 +211,7 @@ int c = 0;
 							 
 				if (entity.getType() == zEntityType)
 				{
-					if (c >= (limit -4)) //NEW allows for re-spawning
+					if (c >= (limit -16)) //NEW allows for re-spawning
 					{
 					entity.remove();
 					}
